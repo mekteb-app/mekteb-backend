@@ -1,0 +1,30 @@
+version: '3'
+services:
+  postgres:
+    image: 'postgres'
+    ports:
+      - '5432:5432'
+    volumes:
+      - database:/var/lib/postgresql/data
+    env_file:
+      - ./postgres.db.env
+
+  backend:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  database:
+  cache:
+  queue:
