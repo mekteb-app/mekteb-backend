@@ -15,24 +15,31 @@ export const dataSource = new DataSource({
 	synchronize: DATABASE_ENABLE_SYNC,
 	migrations: ['src/migrations/**/*.ts'],
 	migrationsRun: true,
+	ssl: {
+		rejectUnauthorized: false,
+	},
 });
 
-const DATABASE_RETRY_COUNT = process.env.DATABASE_CONNECT_RETRY_COUNT ? parseInt(process.env.DATABASE_CONNECT_RETRY_COUNT) : 5;
+const DATABASE_RETRY_COUNT = process.env.DATABASE_CONNECT_RETRY_COUNT
+	? parseInt(process.env.DATABASE_CONNECT_RETRY_COUNT)
+	: 5;
 
-const DATABASE_RETRY_INTERVAL_MS = process.env.DATABASE_CONNECT_RETRY_COUNT ? parseInt(process.env.DATABASE_CONNECT_RETRY_INTERVAL_MS) : 5000;
+const DATABASE_RETRY_INTERVAL_MS = process.env.DATABASE_CONNECT_RETRY_COUNT
+	? parseInt(process.env.DATABASE_CONNECT_RETRY_INTERVAL_MS)
+	: 5000;
 
 export async function initialiseDataSource(retries = DATABASE_RETRY_COUNT): Promise<boolean> {
 	return dataSource
 		.initialize()
 		.then(() => true)
-		.catch(err => {
+		.catch((err) => {
 			const remainingRetries = retries - 1;
 			console.warn(`Could not connect to the database, retrying ${remainingRetries} more time(s)`);
 			if (remainingRetries === 0) {
 				console.error(`Error during Data Source initialisation:`, err);
 				return false;
 			}
-			return new Promise(resolve => {
+			return new Promise((resolve) => {
 				setTimeout(() => {
 					initialiseDataSource(remainingRetries).then(resolve);
 				}, DATABASE_RETRY_INTERVAL_MS);
