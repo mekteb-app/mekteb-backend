@@ -14,9 +14,9 @@ export class Community extends Base {
 	@Column()
 	postalCode: number;
 
-	@OneToMany(() => User, user => user.community)
+	@OneToMany(() => User, (user) => user.community)
 	users: User[];
 
-	@OneToMany(() => Child, child => child.community)
+	@OneToMany(() => Child, (child) => child.community)
 	children: Child[];
 }

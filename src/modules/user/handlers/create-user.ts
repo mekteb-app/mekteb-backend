@@ -11,7 +11,7 @@ export async function createUser(req: Request, res: Response, next: NextFunction
 		first_name: req.body.first_name,
 		last_name: req.body.last_name,
 		email: req.body.email,
-		password: hashPassword(req.body.password),
+		hashedPassword: hashPassword(req.body.password),
 		created_at: new Date(),
 		updated_at: new Date(),
 		role: req.body.role || Roles.USER,

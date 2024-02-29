@@ -5,7 +5,7 @@ import { User } from '../../../db/entities/user.entity';
 
 export type UserResult = SuccessResult<User> | NotFoundResult | ErrorResult;
 
-export function getUserByEmail(email: string): Promise<SuccessResult<User> | ErrorResult> {
+export function getUserByEmail(email: string): Promise<UserResult> {
 	return dataSource
 		.getRepository(User)
 		.findOne({ where: { email } })
@@ -13,7 +13,7 @@ export function getUserByEmail(email: string): Promise<SuccessResult<User> | Err
 			type: Result.SUCCESS,
 			data: user,
 		}))
-		.catch(error => ({
+		.catch((error) => ({
 			type: Result.ERROR,
 			message: error.message,
 			error,

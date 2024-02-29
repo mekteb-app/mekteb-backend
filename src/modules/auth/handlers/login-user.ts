@@ -14,19 +14,27 @@ export async function loginUser(req: Request, res: Response, next: NextFunction)
 		return next(userResult.error);
 	}
 
+	if (userResult.type === Result.NOT_FOUND) {
+		res.status(StatusCodes.NOT_FOUND).send({ message: 'User not found' });
+		return next(userResult.message);
+	}
+
 	// Verify password
-	const passwordValid = comparePassword(req.body.password, userResult.data.password);
+	const passwordValid = comparePassword(req.body?.password, userResult?.data?.hashedPassword);
 	if (!passwordValid) {
-		res.status(StatusCodes.BAD_REQUEST).json({ message: 'Invalid password' });
-		return next();
+		res.status(StatusCodes.BAD_REQUEST).send({ message: 'Invalid password' });
 	}
 
 	// Generate token
-	const token = jwt.sign({ id: userResult.data.id, role: userResult.data.role, email: userResult.data.email }, process.env.JWT_SECRET, {
-		expiresIn: process.env.JWT_REFRESH_EXPIRATION,
-	});
+	const token = jwt.sign(
+		{ id: userResult?.data?.id, role: userResult?.data?.role, email: userResult?.data?.email },
+		process.env.JWT_SECRET,
+		{
+			expiresIn: process.env.JWT_REFRESH_EXPIRATION,
+		}
+	);
 
-	res.status(StatusCodes.ACCEPTED).json({
+	res.status(StatusCodes.ACCEPTED).send({
 		id: userResult.data.id,
 		first_name: userResult.data.first_name,
 		last_name: userResult.data.last_name,

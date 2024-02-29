@@ -22,19 +22,19 @@ export class User extends Base {
 	@IsPhoneNumber()
 	phone: string;
 
-	@Column()
-	password: string;
+	@Column({ type: 'text' })
+	hashedPassword: string;
 
 	@Column({ type: 'enum', enum: Roles })
 	role: Roles;
 
-	@ManyToOne(() => Community, community => community.users, { nullable: true })
+	@ManyToOne(() => Community, (community) => community.users, { nullable: true })
 	community: Community;
 
-	@ManyToMany(() => Child, child => child.parents, { cascade: true })
+	@ManyToMany(() => Child, (child) => child.parents)
 	@JoinTable()
 	children: Child[];
 
-	@OneToMany(() => Message, message => message.sender)
+	@OneToMany(() => Message, (message) => message.sender, { nullable: true })
 	messages: Message[];
 }

@@ -16,12 +16,12 @@ export class Child extends Base {
 	@Column({ type: 'enum', enum: Nivo })
 	nivo: Nivo;
 
-	@ManyToMany(() => User, user => user.children)
+	@ManyToMany(() => User, (user) => user.children)
 	parents: User[];
 
-	@ManyToOne(() => Community, community => community.users)
+	@ManyToOne(() => Community, (community) => community.children)
 	community: Community;
 
-	@OneToMany(() => Message, message => message.child)
+	@OneToMany(() => Message, (message) => message.child)
 	messages: Message[];
 }
