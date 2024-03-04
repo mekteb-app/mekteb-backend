@@ -5,17 +5,19 @@ import { User } from '../../../db/entities/user.entity';
 
 export type UserResult = SuccessResult<User> | NotFoundResult | ErrorResult;
 
-export function getUserByEmail(email: string): Promise<UserResult> {
-	return dataSource
-		.getRepository(User)
-		.findOne({ where: { email } })
-		.then<SuccessResult<User>>((user: User) => ({
-			type: Result.SUCCESS,
-			data: user,
-		}))
-		.catch((error) => ({
-			type: Result.ERROR,
-			message: error.message,
-			error,
-		}));
+export class UserService {
+	async getUserByEmailOrPhone(email?: string, phone?: string): Promise<UserResult> {
+		return dataSource
+			.getRepository(User)
+			.findOne({ where: [{ email }, { phone }] })
+			.then<SuccessResult<User>>((user: User) => ({
+				type: Result.SUCCESS,
+				data: user,
+			}))
+			.catch((error) => ({
+				type: Result.ERROR,
+				message: error.message,
+				error,
+			}));
+	}
 }

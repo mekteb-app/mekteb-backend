@@ -34,6 +34,8 @@ export function bootstrapApp(): Express {
 
 function genericErrorHandler(err, req: Request, res: Response, next: NextFunction) {
 	console.error('An unexpected error occurred', err);
-	res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({ error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) });
+	res
+		.status(StatusCodes.INTERNAL_SERVER_ERROR)
+		.send({ error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) });
 	return next();
 }
