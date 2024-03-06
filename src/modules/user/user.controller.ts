@@ -1,15 +1,19 @@
 import { Router } from 'express';
 import { CreateUserHandler } from './handlers/create-user';
 import { GetAllUsersHandler } from './handlers/get-all-users';
-import { verifyToken } from '../../middlewares/auth.middleware';
 import { checkRole } from '../../middlewares/role.middleware';
 import { Roles } from '../../db/enums';
+import validatePayload from '../../middlewares/payload-validation.middleware';
+import { CreateUserDto } from '../../dtos/create-user.dto';
 
 const userRouter = Router();
 
-// TODO Only role admin can access this route
-userRouter.get('/', verifyToken, checkRole(Roles.ADMIN), GetAllUsersHandler.getAllUsers);
-// TODO Validate dto
-userRouter.post('/', verifyToken, CreateUserHandler.createUser);
+userRouter.get('/', checkRole(Roles.ADMIN), GetAllUsersHandler.getAllUsers);
+userRouter.post(
+	'/',
+	checkRole(Roles.ADMIN),
+	validatePayload(CreateUserDto, 'body'),
+	CreateUserHandler.createUser
+);
 
 export const UserController = { router: userRouter };

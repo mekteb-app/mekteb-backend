@@ -11,3 +11,9 @@ export enum Nivo {
 	Fourth = 4,
 	Fifth = 5,
 }
+
+export enum Status {
+	ACTIVE = 1,
+	INACTIVE = 0,
+	PENDING = 2,
+}

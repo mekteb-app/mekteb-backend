@@ -2,7 +2,7 @@ import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { User } from './user.entity';
 import { Community } from './community.entity';
 import { Message } from './message.entity';
-import { Nivo } from '../enums';
+import { Nivo, Status } from '../enums';
 import { Base } from './base';
 
 @Entity('children')
@@ -15,6 +15,12 @@ export class Child extends Base {
 
 	@Column({ type: 'enum', enum: Nivo })
 	nivo: Nivo;
+
+	@Column()
+	birthdate: string;
+
+	@Column({ default: Status.ACTIVE })
+	status: Status;
 
 	@ManyToMany(() => User, (user) => user.children)
 	parents: User[];

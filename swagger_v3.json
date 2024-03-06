@@ -140,6 +140,22 @@
       },
       "post": {
         "summary": "/api/users",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "test"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "202": {
             "description": "Accepted",
@@ -151,6 +167,54 @@
                     "id": {
                       "type": "string",
                       "example": "618bfac8-de81-4b61-97a2-bc5092ddf938"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "property email should not exist, first_name must be a string, last_name must be a string, birthdate must be a valid ISO 8601 date string, role must be one of the following values: 1, 2, 3, 4, 5"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Unsufficient permissions"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "example": "Internal Server Error"
                     }
                   }
                 }

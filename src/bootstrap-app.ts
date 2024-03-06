@@ -1,8 +1,9 @@
-import express, { Express, NextFunction, Request, Response } from 'express';
+import express, { Express, Request, Response } from 'express';
 import expressOasGenerator, { SPEC_OUTPUT_FILE_BEHAVIOR } from 'express-oas-generator';
-import { getReasonPhrase, StatusCodes } from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 import { apiRouter } from './modules/router';
 import { corsMiddleware } from './middlewares/cors';
+import errorMiddleware from './middlewares/error.middleware';
 
 export function bootstrapApp(): Express {
 	const app = express();
@@ -27,15 +28,7 @@ export function bootstrapApp(): Express {
 		res.status(StatusCodes.OK).send('pong');
 	});
 
-	app.use(genericErrorHandler);
+	app.use(errorMiddleware);
 	expressOasGenerator.handleRequests();
 	return app;
-}
-
-function genericErrorHandler(err, req: Request, res: Response, next: NextFunction) {
-	console.error('An unexpected error occurred', err);
-	res
-		.status(StatusCodes.INTERNAL_SERVER_ERROR)
-		.send({ error: getReasonPhrase(StatusCodes.INTERNAL_SERVER_ERROR) });
-	return next();
 }

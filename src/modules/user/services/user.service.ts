@@ -1,26 +1,32 @@
-import { InsertResult } from 'typeorm';
+import { In } from 'typeorm';
 import { Result } from '../../../constants/result';
 import { dataSource } from '../../../db/datasource';
 import { ErrorResult, NotFoundResult, SuccessResult } from '../../../interfaces/results';
 import { User } from '../../../db/entities/user.entity';
+import { Child } from '../../../db/entities/child.entity';
 
-export type CreateOrUpdateUserResult = SuccessResult<{ id: User['id'] }> | ErrorResult;
+export type CreateOrUpdateUserResult = SuccessResult<User> | ErrorResult;
 export type UserResult = SuccessResult<User> | NotFoundResult | ErrorResult;
 
 export class UserService {
-	async insertUser(user: Omit<User, 'id'>): Promise<CreateOrUpdateUserResult> {
-		return dataSource
-			.getRepository(User)
-			.insert(user)
-			.then<SuccessResult<{ id: User['id'] }>>((insertedUser: InsertResult) => ({
-				type: Result.SUCCESS,
-				data: { id: insertedUser.raw[0].id },
-			}))
-			.catch((error) => ({
-				type: Result.ERROR,
-				message: `An unexpected error occurred during creating user`,
-				error,
-			}));
+	async insertUser(
+		user: Omit<User, 'id'>,
+		childrenIds: string[]
+	): Promise<CreateOrUpdateUserResult> {
+		const userRepository = dataSource.getRepository(User);
+		const childRepository = dataSource.getRepository(Child);
+
+		const children = await childRepository.findBy({ id: In(childrenIds) });
+
+		const createdUser = userRepository.create({
+			...user,
+			children,
+		});
+
+		return {
+			type: Result.SUCCESS,
+			data: await userRepository.save(createdUser),
+		};
 	}
 
 	async getUsers(): Promise<SuccessResult<User[]> | ErrorResult> {

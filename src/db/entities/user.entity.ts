@@ -3,7 +3,7 @@ import { Community } from './community.entity';
 import { IsEmail, IsPhoneNumber } from 'class-validator';
 import { Child } from './child.entity';
 import { Message } from './message.entity';
-import { Roles } from '../enums';
+import { Roles, Status } from '../enums';
 import { Base } from './base';
 
 @Entity('users')
@@ -25,13 +25,19 @@ export class User extends Base {
 	@Column({ type: 'text' })
 	hashedPassword: string;
 
+	@Column({ nullable: true })
+	birthdate: string;
+
+	@Column({ default: Status.PENDING })
+	status: Status;
+
 	@Column({ type: 'enum', enum: Roles })
 	role: Roles;
 
 	@ManyToOne(() => Community, (community) => community.users, { nullable: true })
 	community: Community;
 
-	@ManyToMany(() => Child, (child) => child.parents)
+	@ManyToMany(() => Child, (child) => child.parents, { cascade: true })
 	@JoinTable()
 	children: Child[];
 

@@ -4,7 +4,9 @@ import * as process from 'process';
 export const ALL_LOG_LEVELS = 'INFO,DEBUG,WARN,ERROR';
 type LogLevel = 'INFO' | 'DEBUG' | 'WARN' | 'ERROR';
 
-const LOG_LEVELS: LogLevel[] = (process.env.ALLOWED_LOG_LEVELS || ALL_LOG_LEVELS).split(',') as LogLevel[];
+const LOG_LEVELS: LogLevel[] = (process.env.ALLOWED_LOG_LEVELS || ALL_LOG_LEVELS).split(
+	','
+) as LogLevel[];
 
 const ENABLED_LEVELS = new Set<LogLevel>(LOG_LEVELS);
 
