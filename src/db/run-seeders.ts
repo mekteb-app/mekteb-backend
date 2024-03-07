@@ -22,9 +22,6 @@ const options: DataSourceOptions & SeederOptions = {
 	// Additional configuration by typeorm-extension
 	factories: [],
 	seeds: [CommunitiesSeeder, UsersSeeder],
-	ssl: {
-		rejectUnauthorized: false,
-	},
 };
 
 const dataSource = new DataSource(options);

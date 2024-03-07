@@ -19,7 +19,7 @@
     "postbuild": "node tools/generators/generate-prod-package-json.js",
     "build:watch": "tsc --watch --project ./tsconfig.build.json",
     "prestart": "npm run build",
-    "start": "node dist/main",
+    "start": "nodemon dist/main",
     "dev": "concurrently --raw -n \"tsc,server\" -s \"last\" -c \"magenta,yellow\" \"npm run build:watch\" \"npm run start\"",
     "dev:mirza": "nodemon src/main",
     "start:docker": "nodemon /app/main",
