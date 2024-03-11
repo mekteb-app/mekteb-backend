@@ -156,6 +156,18 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Unauthorized! Access Token expired!"
+                }
+              }
+            }
+          },
           "403": {
             "description": "Forbidden",
             "schema": {
@@ -230,6 +242,18 @@
               "type": "undefined"
             }
           },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
+          },
           "500": {
             "description": "Internal Server Error",
             "schema": {
@@ -246,6 +270,98 @@
         "tags": [],
         "produces": [
           "application/json"
+        ]
+      }
+    },
+    "/api/auth/verify-user": {
+      "post": {
+        "summary": "/api/auth/verify-user",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User verified"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Invalid token,Invalid token, Password is required, Confirm password is required"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "User not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Passwords do not match"
+                }
+              }
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/send-email": {
+      "post": {
+        "summary": "/send-email",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "string",
+              "example": "Email sent successfully"
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "string",
+              "example": "Internal Server Error"
+            }
+          }
+        },
+        "tags": [],
+        "produces": [
+          "text/html"
         ]
       }
     },
