@@ -7,7 +7,6 @@ import { VerifyUserDto } from '../../dtos/verify-user.dto';
 
 const authRouter = Router();
 
-// TODO: Validate payload
 authRouter.post('/login', validatePayload(LoginUserDto, 'body'), LoginHandler.loginUser);
 authRouter.post(
 	'/verify-user',
