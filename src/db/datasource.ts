@@ -15,6 +15,9 @@ export const dataSource = new DataSource({
 	synchronize: DATABASE_ENABLE_SYNC,
 	migrations: ['src/migrations/**/*.ts'],
 	migrationsRun: true,
+	ssl: {
+		rejectUnauthorized: false,
+	},
 });
 
 const DATABASE_RETRY_COUNT = process.env.DATABASE_CONNECT_RETRY_COUNT
