@@ -3,7 +3,7 @@ import { ChildService } from '../services/child.service';
 import { Result } from '../../../constants/result';
 import { LogHelper } from '../../../utils/log-helper';
 import { StatusCodes } from 'http-status-codes';
-import { Status } from 'src/db/enums';
+import { Status } from '../../../db/enums';
 
 export class CreateChildHandler {
 	public static async createUser(req: Request, res: Response, next: NextFunction): Promise<void> {
