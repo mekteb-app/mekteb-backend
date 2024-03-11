@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { apiRouter } from './modules/router';
 import { corsMiddleware } from './middlewares/cors';
 import errorMiddleware from './middlewares/error.middleware';
+import { sendUserVerificationEmail } from './utils/send-email';
 
 export function bootstrapApp(): Express {
 	const app = express();
@@ -26,6 +27,19 @@ export function bootstrapApp(): Express {
 
 	app.use('/ping', (req: Request, res: Response) => {
 		res.status(StatusCodes.OK).send('pong');
+	});
+
+	app.post('/send-email', async (req, res) => {
+		const { to } = req.body;
+
+		try {
+			// Send the email
+			await sendUserVerificationEmail(to, 'Test', 'This is a test email from the API.');
+			res.status(200).send('Email sent successfully');
+		} catch (error) {
+			console.error('Error sending email:', error);
+			res.status(500).send('Internal Server Error');
+		}
 	});
 
 	app.use(errorMiddleware);

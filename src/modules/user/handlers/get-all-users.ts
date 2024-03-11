@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { Result } from '../../../constants/result';
 import { LogHelper } from '../../../utils/log-helper';
-import { UserService } from '../services/user.service';
+import { UserService } from '../../../services/user.service';
 
 export class GetAllUsersHandler {
 	public static async getAllUsers(req: Request, res: Response, next: NextFunction): Promise<void> {
