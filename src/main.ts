@@ -3,7 +3,6 @@ require('dotenv').config();
 import { bootstrapApp } from './bootstrap-app';
 import { initialiseDataSource } from './db/datasource';
 import { LogHelper } from './utils/log-helper';
-import 'reflect-metadata';
 
 const PORT = process.env.PORT || 3333;
 
